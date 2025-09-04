@@ -1,4 +1,4 @@
-```markdown
+
 # Tender Scraper Project
 
 📌 **Overview**  
@@ -31,7 +31,7 @@ The scraped data is stored in a MongoDB database, making it ready for further an
 - Git (optional, for cloning the repo)
 
 **Setup Steps:**  
-```
+
 git clone <repository_url>
 cd tender-scraper-project
 
@@ -44,13 +44,13 @@ venv\Scripts\activate
 source venv/bin/activate
 
 pip install -r requirements.txt
-```
+
 
 ---
 
 📂 **Project Structure**
 
-```
+
 tender-scraper-project/
 ├── scrapy.cfg
 ├── requirements.txt
@@ -67,16 +67,15 @@ tender-scraper-project/
 │   ├── main.py
 │   └── models.py
 └── run_api.py                   # API launch script
-```
+
 
 ---
 
 ▶️ **Usage**
 
 From the project root (where `scrapy.cfg` is), run:  
-```
+
 scrapy crawl cppp
-```
 
 This will:  
 - Start scraping from the first page.  
