@@ -1,53 +1,39 @@
-Tender Scraper Project
-📌 Overview
+```markdown
+# Tender Scraper Project
 
-This project is a Scrapy-based web scraper designed to extract tender data from the Indian Central Public Procurement Portal
-.
-
-It collects:
-
-Tender IDs
-
-Titles
-
-Issuing authorities
-
-Dates
-
-Other metadata
+📌 **Overview**  
+This project is a Scrapy-based web scraper designed to extract tender data from the [Indian Central Public Procurement Portal](https://eprocure.gov.in/cppp/latestactivetendersnew/cpppdata?utm_source=chatgpt.com).  
+It collects:  
+- Tender IDs  
+- Titles  
+- Issuing authorities  
+- Dates  
+- Other metadata  
 
 The scraped data is stored in a MongoDB database, making it ready for further analysis or API consumption.
 
-✨ Features
+---
 
-Scrapes tenders with structured data fields.
+✨ **Features**  
+- Scrapes tenders with structured data fields.  
+- Supports pagination to capture multiple pages.  
+- Converts dates to ISO 8601 format.  
+- Stores data cleanly in MongoDB.  
+- Easily extensible for other portals or extra tender details.
 
-Supports pagination to capture multiple pages.
+---
 
-Converts dates to ISO 8601 format.
+⚙️ **Installation**
 
-Stores data cleanly in MongoDB.
+**Prerequisites:**  
+- Python 3.9+  
+- MongoDB (local or remote)  
+- Git (optional, for cloning the repo)
 
-Easily extensible for other portals or extra tender details.
-
-⚙️ Installation
-Prerequisites
-
-Python 3.9+
-
-MongoDB (local or remote)
-
-Git (optional, for cloning the repo)
-
-Setup Steps
-
-Clone the repository:
-
+**Setup Steps:**  
+```
 git clone <repository_url>
 cd tender-scraper-project
-
-
-Create and activate a virtual environment:
 
 python -m venv venv
 
@@ -57,12 +43,14 @@ venv\Scripts\activate
 # Linux/macOS
 source venv/bin/activate
 
-
-Install dependencies:
-
 pip install -r requirements.txt
+```
 
-📂 Project Structure
+---
+
+📂 **Project Structure**
+
+```
 tender-scraper-project/
 ├── scrapy.cfg
 ├── requirements.txt
@@ -79,50 +67,52 @@ tender-scraper-project/
 │   ├── main.py
 │   └── models.py
 └── run_api.py                   # API launch script
+```
 
-▶️ Usage
+---
 
-From the project root (scrapy.cfg location), run:
+▶️ **Usage**
 
+From the project root (where `scrapy.cfg` is), run:  
+```
 scrapy crawl cppp
+```
 
+This will:  
+- Start scraping from the first page.  
+- Follow pagination links automatically.  
+- Stop after scraping 30 tenders (configurable in spider).  
+- Insert data into MongoDB → `tenderdb` database → `tenders` collection.
 
-This will:
+---
 
-Start scraping from the first page.
+🧩 **Code Highlights**
 
-Follow pagination links.
+- `cppp_spider.py` → Spider with XPath extraction, pagination, and ISO date parsing.  
+- `pipelines.py` → Handles MongoDB storage and upserts to avoid duplicates.  
+- `settings.py` → MongoDB connection config and Scrapy parameters.  
+- Pagination logic → Automatically increments page query parameters on portal.  
+- Error handling → Manages missing fields & date parsing issues gracefully.
 
-Stop after scraping 30 tenders (configurable).
+---
 
-Insert data into MongoDB → tenderdb database → tenders collection.
+🚀 **Improvements & Next Steps**
 
-🧩 Code Highlights
+🔹 **Technology Stack & Anti-Scraping Mitigation**  
+- Python (Scrapy) for scraping orchestration; fallback to Selenium/Playwright for dynamic content.  
+- BeautifulSoup/lxml for advanced parsing as needed.  
+- Proxy rotation and user-agent spoofing for stealth and robustness.  
+- CAPTCHA solving if required for protected portals.
 
-cppp_spider.py → Spider with XPath extraction, pagination, and ISO date parsing.
+🔹 **Vector Embedding Pipeline**  
+- Scrape & Store → Insert MongoDB document, `vectorEmbedding = null`.  
+- Event Trigger → Use RabbitMQ / Kafka or MongoDB Change Streams.  
+- Embedding Worker → Generate semantic text embeddings (Sentence-BERT / OpenAI API).  
+- Update Record → Patch `vectorEmbedding` field with float vector array.
 
-pipelines.py → Handles MongoDB storage.
+🔹 **Output Formatting & Consistency**  
+- Maintain API and database document compatibility with shared specs.  
+- Map unstructured data sections as raw text or HTML for full fidelity.  
+- Test with synthetic data aligned with output schema.
 
-settings.py → MongoDB config + scraping parameters.
-
-Pagination logic → Automatically increments page queries.
-
-Error handling → Manages missing fields & date parsing issues.
-
-🚀 Improvements & Next Steps
-
-Enhance XPath selectors to capture richer details (eligibility, value, category).
-
-Follow tender detail pages for documents & in-depth info.
-
-Normalize/validate all date & numerical fields.
-
-Implement incremental scraping to avoid duplicates.
-
-Add anti-blocking techniques (user-agent rotation, proxies).
-
-Build a REST API for frontend consumption.
-
-Automate runs via cron jobs / CI pipelines.
-
-Extend to multi-country portals with configurable spiders.
+---
